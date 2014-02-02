@@ -1,4 +1,4 @@
-Run-a-trip
+Runatrip
 ========
 
 ###### Хакатон в BIONIC University.
