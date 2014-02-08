@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Runatrip</name>
+	<name>runatrip</name>
 	<comment></comment>
 	<projects>
-		<project>RunatripWeb</project>
-		<project>RunatripEJB</project>
+		<project>runatripEJB</project>
+		<project>runatripWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

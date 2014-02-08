@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema">
+ 	<datasource jndi-name="java:jboss/datasources/runatripDS"
+		enabled="true" use-java-context="true" pool-name="runatripDS">
+		<connection-url>jdbc:mysql://localhost:3306/runatrip</connection-url>
+		<driver>mysql</driver>
+		<pool></pool>
+		<security>
+			<user-name>root</user-name>
+			<password>root</password>
+		</security>
+	</datasource>
+</datasources>

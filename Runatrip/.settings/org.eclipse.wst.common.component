@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="Runatrip">
+    <wb-module deploy-name="runatrip">
         <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
-        <dependent-module archiveName="RunatripWeb.war" deploy-path="/" handle="module:/resource/RunatripWeb/RunatripWeb">
+        <dependent-module archiveName="runatripEJB.jar" deploy-path="/" handle="module:/resource/runatripEJB/runatripEJB">
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="RunatripEJB.jar" deploy-path="/" handle="module:/resource/RunatripEJB/RunatripEJB">
+        <dependent-module archiveName="runatripWeb.war" deploy-path="/" handle="module:/resource/runatripWeb/runatripWeb">
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
