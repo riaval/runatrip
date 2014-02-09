@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="client.css" />
+	<!-- jQuery -->
+	<!-- <script type="text/javascript" charset="UTF-8" src="http://code.jquery.com/jquery-2.0.3.min.js"></script> -->
+	<!-- Bootstrap -->
+	<h:outputStylesheet library="bootstrap/css" name="bootstrap.min.css" />
+	<h:outputScript library="bootstrap/js" name="bootstrap.min.js" />
+	<title>#{title}</title>
+</h:head>
+<h:body>
+	<div class="expanded">
+		<nav class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+
+				<div class="wrapper">
+					<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+
+					<!-- Be sure to leave the brand out there if you want it shown -->
+					<a class="brand" href="/RunatripWeb/faces/index.xhtml">Runatrip</a>
+
+					<!-- Everything you want hidden at 940px or less, place within here -->
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="/QuizTestWebUser/faces/index.xhtml">#{res.quizzes}</a></li>
+							<h:panelGroup rendered="#{request.isUserInRole('user')}"><li><h:link outcome="results" value="#{res.results}" /></li></h:panelGroup>
+							<h:panelGroup rendered="#{not empty quizRunBean.quiz}"><li><h:link styleClass="active-quiz" outcome="testRun" value="#{res.active_quiz}" /></li></h:panelGroup>
+							<!-- <li><a class="active-quiz" href="/QuizTestWebUser/faces/index.xhtml">Active quiz</a></li> -->
+						</ul>
+
+						<ul class="nav pull-right">
+<!-- 							<li class="dropdown"><a data-toggle="dropdown"
+								class="dropdown-toggle" href="#">#{res.language}<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">English</a></li>
+									<li><a href="#">Русский</a></li>
+								</ul>
+							</li> -->
+							<li class="divider-vertical"></li>
+							<h:panelGroup rendered="#{not request.isUserInRole('user')}">
+								<li><h:link outcome="signin" value="#{res.sign_in}" /></li>
+								<li><h:link outcome="signup" value="#{res.sign_up}" /></li>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{request.isUserInRole('user')}">
+								<li class="dropdown"><a data-toggle="dropdown"
+									class="dropdown-toggle" href="#">#{authBean.getUser().firstName} #{authBean.getUser().lastName}<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><p:commandLink action="#{authBean.logout()}" value="#{res.log_out}" /></li>
+									</ul>
+								</li>						
+							</h:panelGroup>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</nav>
+
+		<div class="wrapper top">
+			<ui:insert name="content" />
+		</div>
+		
+		<div class="push"></div>
+	</div>
+
+	<footer>
+		<div class="wrapper">
+			<p class="muted credit">© BIONIC University 2013</p>
+		</div>
+	</footer>
+	
+</h:body>
+</html>

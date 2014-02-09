@@ -1,0 +1,83 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/user-template.xhtml">
+
+	<ui:param name="title" value="Runatrip" />
+
+	<ui:define name="content">
+
+		<div class="wrapper">
+			<h:form id="form">
+			
+			<div class="page-header button-header">
+				<h1>Please select area of interest</h1>
+				<div class="right">
+					<h:panelGroup>
+						<p:commandButton action="#{resultBean.confirm()}" value="Confirm"  styleClass="ui-priority-primary" />
+					</h:panelGroup>
+				</div>
+			</div>
+			
+			<p:growl id="messages" showDetail="true" />  
+			
+		    <div class="row-fluid">
+			    <div class="span8">
+    				
+					    <p:treeTable value="#{mainBean.root}" var="document" id="multiSelect"  
+					                 selection="#{resultBean.selectedNodes}" selectionMode="checkbox">  
+					  
+					   <p:ajax event="select" listener="#{mainBean.onNodeSelect}" update=":form:info" />  
+					  
+					        <p:column style="width:150px">  
+					            <f:facet name="header">  
+					                Name  
+					            </f:facet>  
+					            <h:outputText value="#{document.title}" />  
+					        </p:column>  <button class="btn btn-success" type="button">Success</button>
+					  
+					        <p:column style="width:100px">  
+					            <f:facet name="header">  
+					                Address  
+					            </f:facet>  
+					            <h:outputText value="#{document.address}" />  
+					        </p:column>  
+					       
+		
+					    </p:treeTable>  
+					 
+			    
+			    </div>
+			    <div class="span4">
+			    	<h:panelGroup id="info">
+		    	    <table role="grid" style="width:100%">
+		    	    	<thead>
+		    	    		<tr role="row">
+			    	    		<th style="height: 26px" role="columnheader" class="ui-state-default ui-resizable-column">  
+					                Info  
+					            </th>
+				            </tr>
+		    	    	</thead>
+		    	    	<tfoot>
+		    	    	</tfoot>
+		    	    	<tbody class="ui-datatable-data ui-widget-content">
+		    	    	<tr role="row">
+		    	    		<td style="padding: 10px" >
+		    	    			#{mainBean.info}
+		    	    		</td>
+		    	    	</tr>
+		    	    	</tbody>
+		    	    </table>
+		    	    </h:panelGroup>
+			    
+			    </div>
+		    </div>
+		    </h:form>  
+		
+		</div>
+
+	</ui:define>
+
+</ui:composition>

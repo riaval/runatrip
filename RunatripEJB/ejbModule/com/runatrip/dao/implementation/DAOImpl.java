@@ -18,7 +18,7 @@ public abstract class DAOImpl<T> implements DAO<T> {
 	private String findAllQuery;
 	private String countQuery;
 
-	@PersistenceContext(type = PersistenceContextType.EXTENDED, unitName = "runatripPU")
+//	@PersistenceContext(type = PersistenceContextType.EXTENDED, unitName = "runatripPU")
 	protected EntityManager em;
 
 	public DAOImpl(Class<T> clazz) {

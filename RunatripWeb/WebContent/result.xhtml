@@ -1,0 +1,31 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/user-template.xhtml">
+
+	<ui:param name="title" value="Runatrip" />
+
+	<ui:define name="content">
+
+		<div class="wrapper">
+			
+		    <h:form>
+		        <p:dataTable var="place" value="#{resultBean.plases}">
+		            <p:column headerText="Name">
+		                <h:outputText value="#{place.title}" />
+		            </p:column>
+		      
+		            <p:column headerText="Address">
+		                <h:outputText value="#{place.address}" />
+		            </p:column>
+	
+		        </p:dataTable>
+		    </h:form>
+		
+		</div>
+
+	</ui:define>
+
+</ui:composition>

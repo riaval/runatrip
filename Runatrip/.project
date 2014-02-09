@@ -3,8 +3,8 @@
 	<name>runatrip</name>
 	<comment></comment>
 	<projects>
-		<project>runatripEJB</project>
-		<project>runatripWeb</project>
+		<project>RunatripEJB</project>
+		<project>RunatripWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
