@@ -3,32 +3,39 @@ package com.runatrip.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
 
-import com.runatrip.ejb.Place;
+import com.runatrip.dao.implementation.OrderBy;
 import com.runatrip.ejb.Category;
+import com.runatrip.ejb.Place;
+import com.runatrip.service.implementation.PlaceServiceImpl;
 
 @ManagedBean
 public class MainBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@EJB
+	private PlaceServiceImpl placeServiceImpl;
+	
 	private TreeNode root;  
     
     private String info;
       
-    public MainBean() {
-    	List<Category> trips = Test.getTrips();
+    @PostConstruct
+    public void init() {
+//    	List<Category> categories = Test.getTrips();
+    	List<Category> categories = placeServiceImpl.getPlacesCategories();
     	
         root = new CheckboxTreeNode(new Place("root", "root"), null);
         
-        for (Category trip : trips) {
+        for (Category trip : categories) {
         	TreeNode first = new CheckboxTreeNode(new Place(trip.getName(), "-"), root);
         	for (Place place : trip.getPlaces()) {
         		TreeNode second = new CheckboxTreeNode(place, first);

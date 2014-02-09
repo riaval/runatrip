@@ -3,28 +3,35 @@ package com.runatrip.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
-import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
 
 import com.runatrip.ejb.Place;
+import com.runatrip.ejb.Trip;
+import com.runatrip.service.implementation.PlaceServiceImpl;
 
 @ManagedBean
 public class ResultBean {
 	
+	@EJB
+	private PlaceServiceImpl placeServiceImpl;
+	
 	private TreeNode[] selectedNodes;
-	private List<Place> plases;
+	private List<Place> places;
 	
 	public String confirm() {		
-		plases = new ArrayList<Place>();
+		List<Place> places = new ArrayList<Place>();
     	for (TreeNode treeNode : selectedNodes) {
     		if (treeNode.isLeaf()) {
     			Place place = (Place) treeNode.getData();
-        		plases.add(place);
+    			places.add(place);
 			}
 //    		System.out.println(place.getTitle());
 		}
+    	Trip trip = placeServiceImpl.getResult(places);
+    	this.places = trip.getPlaces();
     	
     	return "result";
     }
@@ -37,13 +44,12 @@ public class ResultBean {
         this.selectedNodes = selectedNodes;  
     }
 
-	public List<Place> getPlases() {
-		System.out.println(plases);
-		return plases;
+	public List<Place> getPlaces() {
+		return places;
 	}
 
-	public void setPlases(List<Place> plases) {
-		this.plases = plases;
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
 	
 }
