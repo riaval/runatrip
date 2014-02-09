@@ -18,23 +18,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "trip")
 @XmlRootElement
 @NamedQueries({
-//		@NamedQuery(name = "Comment.deleteByNoticeId", query = "UPDATE Comment c "
-//				+ "SET c.isDeleted = true " + "WHERE c.notice.id = :noticeId"),
-//		@NamedQuery(name = "Comment.getComments", query = "SELECT c FROM Comment c WHERE c.notice.id = :noticeId ORDER BY c.id DESC") 
-		
+// @NamedQuery(name = "Comment.deleteByNoticeId", query = "UPDATE Comment c "
+// + "SET c.isDeleted = true " + "WHERE c.notice.id = :noticeId"),
+// @NamedQuery(name = "Comment.getComments", query =
+// "SELECT c FROM Comment c WHERE c.notice.id = :noticeId ORDER BY c.id DESC")
+
 })
 public class Category {
 
 	private static final long serialVersionUID = 1L;
-	
-	public Category() {}
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = false)
+	protected Long id;
+
+	@Column(name = "name")
+	private String name;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cat")
+	private List<Place> places;
+
+	public Category() {
+	}
+
 	public Category(String name, List<Place> places) {
 		super();
 		this.name = name;
 		this.places = places;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -50,17 +64,5 @@ public class Category {
 	public void setPlaces(List<Place> places) {
 		this.places = places;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", unique = false)
-	protected Long id;
-
-	@Column(name = "name")
-	private String name;
-
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "com_parent")
-	private List< Place> places;
 
 }
