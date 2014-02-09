@@ -28,6 +28,7 @@ public class Place {
 
 	@Column(name = "name")
 	private String title;
+	
 	@Column(name = "address")
 	private String address;
 
@@ -35,8 +36,14 @@ public class Place {
 	
 	@Column(name = "lat")
 	private double lat;
+	
 	@Column(name = "lon")
 	private double lon;
+	
+	@Column(name="timeToNext")
+	private double timeToNExt;
+	
+	
 	
 	public Place(String title, String address) {
 		this.title = title;
@@ -52,6 +59,13 @@ public class Place {
 	}
 
 	public Place() {
+	}
+
+	@Override
+	public String toString() {
+		return "Place [id=" + id + ", title=" + title + ", address=" + address
+				+ ", info=" + info + ", lat=" + lat + ", lon=" + lon
+				+ ", timeToNExt=" + timeToNExt + "]";
 	}
 
 	public Long getId() {
@@ -78,6 +92,14 @@ public class Place {
 		this.address = address;
 	}
 
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
 	public double getLat() {
 		return lat;
 	}
@@ -94,12 +116,14 @@ public class Place {
 		this.lon = lon;
 	}
 
-	public String getInfo() {
-		return info;
+	public double getTimeToNExt() {
+		return timeToNExt;
 	}
 
-	public void setInfo(String info) {
-		this.info = info;
+	public void setTimeToNExt(double timeToNExt) {
+		this.timeToNExt = timeToNExt;
 	}
+
+
 	
 }

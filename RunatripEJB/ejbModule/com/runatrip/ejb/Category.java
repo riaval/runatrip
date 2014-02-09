@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "trip")
+@Table(name = "category")
 @XmlRootElement
 @NamedQueries({
 // @NamedQuery(name = "Comment.deleteByNoticeId", query = "UPDATE Comment c "
