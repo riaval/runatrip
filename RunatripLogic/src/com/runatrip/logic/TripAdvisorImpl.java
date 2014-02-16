@@ -46,9 +46,9 @@ public class TripAdvisorImpl implements TripAdvisor{
 		}
 		for (int startPoint = 0; startPoint < listOfPlases.size()-1; startPoint++){
 			sortPlasis(startPoint, listOfPlases);
-			System.out.println("______________________________________----______");
-			System.out.println(listOfPlases);
-			System.out.println("______________________________________----______");
+//			System.out.println("______________________________________----______");
+//			System.out.println(listOfPlases);
+//			System.out.println("______________________________________----______");
 		}	
 	
 		trip.setPlaces(listOfPlases);
@@ -132,33 +132,24 @@ public class TripAdvisorImpl implements TripAdvisor{
 	            }
 	        }
 	    });
-	    final String distance = result.getJSONObject("distance").getString("text");// расстояние в километрах
-	    final String duration = result.getJSONObject("duration").getString("text");// время в пути
+	    final double distance = result.getJSONObject("distance").getDouble("value")/1000;// расстояние в километрах
+	    final int duration = result.getJSONObject("duration").getInt("value")/60;// время в пути в минутах
 	    final String cords = result.getString("address");// адрес
-	   	    
+	    listOfPlases.get(startPoint).setDistanceToNext(distance);
+	    listOfPlases.get(startPoint).setTimeToNext(duration);
 	    int nextPlaceIndex = findIndex(startPoint, listOfPlases, cords);
 	    
-	    
-	    
-	    
-	    
-	    
-	    //TODO зделать запись расстояния к следующему объекту
-//	    listOfPlases.get(startPoint).setDistanceToNext(Double.parseDouble(distance));
-//	    listOfPlases.get(startPoint).setTimeToNext(Integer.parseInt(duration));
 	    swith(startPoint+1, nextPlaceIndex, listOfPlases);
 	    
-	    String tempStrFrom = listOfPlases.get(startPoint).getAddress();
-	    String tempStrTo = listOfPlases.get(startPoint+1).getAddress();
-	    System.out.println("От "+ tempStrFrom + " до " +tempStrTo +"\nРасстояние: " + distance + "\nПродолжительность времени: " + duration);
-	
+	    
+	    //Распечатка результата на консоль:
+//	    String tempStrFrom = listOfPlases.get(startPoint).getAddress();
+//	    String tempStrTo = listOfPlases.get(startPoint+1).getAddress();
+//	    System.out.println("От "+ tempStrFrom + " до " +tempStrTo +"\nРасстояние: " + distance + "\nПродолжительность времени: " + duration);
+	  
 	
 	}
 	    
-	    
-	
-	
-	
 	private int findIndex (int startOfSearch, List<Place> listOfPlases, String targetCoordinats){
 		int rezult;
 		for (rezult=startOfSearch; rezult < listOfPlases.size()-1; rezult++) {
@@ -193,7 +184,7 @@ public class TripAdvisorImpl implements TripAdvisor{
 	    params.put("sensor", "false");// исходит ли запрос на геокодирование от устройства с датчиком местоположения
 	    params.put("address", place.getAddress());// адрес, который нужно геокодировать
 	    final String url = baseUrl + '?' + encodeParams(params);// генерируем путь с параметрами
-	    System.out.println(url);// Путь, что бы можно было посмотреть в браузере ответ службы
+//	    System.out.println(url);// Путь, что бы можно было посмотреть в браузере ответ службы
 	    final JSONObject response = JsonReader.read(url);// делаем запрос к вебсервису и получаем от него ответ
 	    // как правило наиболее подходящий ответ первый и данные о координатах можно получить по пути
 	    // //results[0]/geometry/location/lng и //results[0]/geometry/location/lat
