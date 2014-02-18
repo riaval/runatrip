@@ -25,7 +25,7 @@ public class Main {
 			return;
 		}
 		for (int i = 0; i < trip.getPlaces().size(); i++) {
-			System.out.println("Индекс элемента: "+i+" это: "+trip.getPlaces().get(i));
+			System.out.println("Indeks jelementa: "+i+" jeto: "+trip.getPlaces().get(i));
 			
 		}
 		
@@ -40,14 +40,14 @@ public class Main {
 		Place place6 = new Place();
 		Place place7 = new Place();
 		Place place8 = new Place();	
-		place1.setAddress("Украина, Луганск, Совецкая 21");
-		place2.setAddress("Россия, Москва, Совецкая 21");
-		place3.setAddress("Украина, Киев, Совецкая 21");
-		place4.setAddress("Украина, Львов, Совецкая 21");
-		place5.setAddress("Украина, Одесса, Советская 21");
-		place6.setAddress("Украина, Харьков, Совецкая 21");
-		place7.setAddress("Украина, Донецк, Советская 21");
-		place8.setAddress("Украина, Днепропетровск, Совецкая 21");
+		place1.setAddress("Ukraine, Lugansk, Sovetskaya 21");
+		place2.setAddress("Russia, Moscow, Sovetskaya 21");
+		place3.setAddress("Ukraine, Kiev, Sovetskaya 21");
+		place4.setAddress("Ukraine, Lviv, Sovetskaya 21");
+		place5.setAddress("Ukraine, Odessa, Sovetskaya 21");
+		place6.setAddress("Ukraine, Kharkiv, Sovetskaya 21");
+		place7.setAddress("Ukraine, Donetsk, Sovetskaya 21");
+		place8.setAddress("Ukraine, Dnepropetrovsk, Sovetskaya 21");
 		place1.setId(1L);
 		place2.setId(2L);
 		place3.setId(3L);

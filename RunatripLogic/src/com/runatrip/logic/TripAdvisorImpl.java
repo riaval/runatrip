@@ -27,17 +27,12 @@ public class TripAdvisorImpl implements TripAdvisor{
 	
 	@Override
 	public Trip sort(Trip trip) throws JSONException, IOException {
-		//TODO все время работаем с сылкой на объект. 
-		//Если нужно работать с копией - нужно реализовать глубокое копирование
-		//и ниже нужно скопировать trip
-		
 		List<Place> listOfPlases = trip.getPlaces();
 		if(listOfPlases == null){
 			return null;
 		}
-		
-		//проверка: заполнины ли поля поля долгота, широта и адресс 
-		//если нет - заполняются
+		//proverka: zapolniny li polja polja dolgota, shirota i adress 
+		//esli net - zapolnjajutsja
 		for(Place place : listOfPlases){
 			checkCords(place);
 		}
@@ -46,9 +41,6 @@ public class TripAdvisorImpl implements TripAdvisor{
 		}
 		for (int startPoint = 0; startPoint < listOfPlases.size()-1; startPoint++){
 			sortPlasis(startPoint, listOfPlases);
-//			System.out.println("______________________________________----______");
-//			System.out.println(listOfPlases);
-//			System.out.println("______________________________________----______");
 		}	
 	
 		trip.setPlaces(listOfPlases);
@@ -60,17 +52,16 @@ public class TripAdvisorImpl implements TripAdvisor{
 		if(listOfPlases.size()- startPoint == 1){
 			return;
 		}		
-	    final String baseUrl = "http://maps.googleapis.com/maps/api/distancematrix/json";// путь к Geocoding API по HTTP
+	    final String baseUrl = "http://maps.googleapis.com/maps/api/distancematrix/json";//  put' k Geocoding API po HTTP
 	    final Map<String, String> params = Maps.newHashMap();
-	    params.put("sensor", "false");// указывает, исходит ли запрос на геокодирование от устройства с датчиком
-	    params.put("language", "ru");// язык данных
-	    params.put("mode", "driving");// идем пешком, может быть driving, walking, bicycling
-	
-	    // адрес или координаты отправных пунктов
+	    params.put("sensor", "false");// ukazyvaet, ishodit li zapros na geokodirovanie ot ustrojstva s datchikom
+	    params.put("language", "ru");// jazyk dannyh
+	    params.put("mode", "driving");// idem peshkom, mozhet byt' driving, walking, bicycling
+	    // adres ili koordinaty otpravnyh punktov
 	    final String[] origins = { listOfPlases.get(startPoint).getLatitude()+","+listOfPlases.get(startPoint).getLongitude(),};
 	    params.put("origins", Joiner.on('|').join(origins));
 	    
-	    // адрес или координаты пунктов назначения
+	    // adres ili koordinaty punktov naznachenija
 	   final String[] destionations= new String [listOfPlases.size()-1-startPoint];
 	   	int index = 0;
 	    for (int searchPoint = startPoint+1; searchPoint < listOfPlases.size(); searchPoint++){
@@ -80,26 +71,26 @@ public class TripAdvisorImpl implements TripAdvisor{
 	    	
 	    }
 	         
-	    // в запросе адреса должны разделяться символом '|'
+	    // v zaprose adresa dolzhny razdeljat'sja simvolom '|'
 	    params.put("destinations", Joiner.on('|').join(destionations));
 	    
-	    final String url = baseUrl + '?' + encodeParams(params);// генерируем путь с параметрами
-//	    System.out.println(url); // Можем проверить что вернет этот путь в браузере
+	    final String url = baseUrl + '?' + encodeParams(params);// generiruem put' s parametrami
+//	    System.out.println(url); // Mozhem proverit' chto vernet jetot put' v brauzere
 	    
-	    final JSONObject response = JsonReader.read(url);// делаем запрос к вебсервису и получаем от него ответ
+	    final JSONObject response = JsonReader.read(url);// delaem zapros k vebservisu i poluchaem ot nego otvet
 	    final JSONObject location = response.getJSONArray("rows").getJSONObject(0);
-	    final JSONArray arrays = location.getJSONArray("elements");// Здесь лежат все рассчитанные значения
-	    // Ищем путь на который мы потратим минимум времени
+	    final JSONArray arrays = location.getJSONArray("elements");// Zdes' lezhat vse rasschitannye znachenija
+	    // Ishhem put' na kotoryj my potratim minimum vremeni
 	    final JSONObject result = Ordering.from(new Comparator<JSONObject>(){
 	        @Override
 	        public int compare(final JSONObject o1, final JSONObject o2) {
 	            final Integer duration1 = getDurationValue(o1);
 	            final Integer duration2 = getDurationValue(o2);
-	            return duration1.compareTo(duration2);// Сравниваем по времени в пути
+	            return duration1.compareTo(duration2);// Sravnivaem po vremeni v puti
 	        }
 
 	        /**
-	         * Возвращает время в пути
+	         * Vozvrashhaet vremja v puti
 	         * 
 	         * @param obj
 	         * @return
@@ -111,7 +102,7 @@ public class TripAdvisorImpl implements TripAdvisor{
 	                throw new RuntimeException(e);
 	            }
 	        }
-	    }).min(new AbstractIterator<JSONObject>() {// К сожалению JSONArray нельзя итереровать, по этому обернем его
+	    }).min(new AbstractIterator<JSONObject>() {// K sozhaleniju JSONArray nel'zja itererovat', po jetomu obernem ego
 	        private int index = 0;
 
 	        @Override
@@ -121,8 +112,8 @@ public class TripAdvisorImpl implements TripAdvisor{
 	                if (index < arrays.length()) {
 	                    final String destionation = destionations[index];
 	                    result = arrays.getJSONObject(index++);
-	                    result.put("address", destionation);// Добавим сразу в структуру и адрес, потому как его нет в
-	                    // этом расчёте
+	                    result.put("address", destionation);//  Dobavim srazu v strukturu i adres, potomu kak ego net v
+	                    // jetom raschjote
 	                } else {
 	                    result = endOfData();
 	                }
@@ -132,9 +123,9 @@ public class TripAdvisorImpl implements TripAdvisor{
 	            }
 	        }
 	    });
-	    final double distance = result.getJSONObject("distance").getDouble("value")/1000;// расстояние в километрах
-	    final int duration = result.getJSONObject("duration").getInt("value")/60;// время в пути в минутах
-	    final String cords = result.getString("address");// адрес
+	    final double distance = result.getJSONObject("distance").getDouble("value")/1000;// rasstojanie v kilometrah
+	    final int duration = result.getJSONObject("duration").getInt("value")/60;// vremja v puti v minutah
+	    final String cords = result.getString("address");// adres
 	    listOfPlases.get(startPoint).setDistanceToNext(distance);
 	    listOfPlases.get(startPoint).setTimeToNext(duration);
 	    int nextPlaceIndex = findIndex(startPoint, listOfPlases, cords);
@@ -142,10 +133,10 @@ public class TripAdvisorImpl implements TripAdvisor{
 	    swith(startPoint+1, nextPlaceIndex, listOfPlases);
 	    
 	    
-	    //Распечатка результата на консоль:
-//	    String tempStrFrom = listOfPlases.get(startPoint).getAddress();
-//	    String tempStrTo = listOfPlases.get(startPoint+1).getAddress();
-//	    System.out.println("От "+ tempStrFrom + " до " +tempStrTo +"\nРасстояние: " + distance + "\nПродолжительность времени: " + duration);
+	   //Raspechatka rezul'tata na konsol':
+		//String tempStrFrom = listOfPlases.get(startPoint).getAddress();
+		//String tempStrTo = listOfPlases.get(startPoint+1).getAddress();
+		//System.out.println("Ot "+ tempStrFrom + " do " +tempStrTo +"\nRasstojanie: " + distance + "\nProdolzhitel'nost' vremeni: " + duration);
 	  
 	
 	}
@@ -172,34 +163,34 @@ public class TripAdvisorImpl implements TripAdvisor{
 		
 	}
 	
-	
-	//Проверяет на наличие координат в Plase
-	//Если кординат нет - заполняет (получает координаты из google по адресу достопримечательности)
+
+	//Proverjaet na nalichie koordinat v Plase
+	//Esli kordinat net - zapolnjaet (poluchaet koordinaty iz google po adresu dostoprimechatel'nosti)
 	private void checkCords(Place place) throws IOException, JSONException {
 		if(place == null || place.getLatitude()!=0.0 && place.getLongitude()!=0.0 || place.getAddress().isEmpty()){
 			return;			
 		}
-	    final String baseUrl = "http://maps.googleapis.com/maps/api/geocode/json";// путь к Geocoding API по HTTP
+	    final String baseUrl = "http://maps.googleapis.com/maps/api/geocode/json";// put' k Geocoding API po HTTP
 	    final Map<String, String> params = Maps.newHashMap();
-	    params.put("sensor", "false");// исходит ли запрос на геокодирование от устройства с датчиком местоположения
-	    params.put("address", place.getAddress());// адрес, который нужно геокодировать
-	    final String url = baseUrl + '?' + encodeParams(params);// генерируем путь с параметрами
-//	    System.out.println(url);// Путь, что бы можно было посмотреть в браузере ответ службы
-	    final JSONObject response = JsonReader.read(url);// делаем запрос к вебсервису и получаем от него ответ
-	    // как правило наиболее подходящий ответ первый и данные о координатах можно получить по пути
-	    // //results[0]/geometry/location/lng и //results[0]/geometry/location/lat
+	    params.put("sensor", "false");// ishodit li zapros na geokodirovanie ot ustrojstva s datchikom mestopolozhenija
+	    params.put("address", place.getAddress());// adres, kotoryj nuzhno geokodirovat'
+	    final String url = baseUrl + '?' + encodeParams(params);// generiruem put' s parametrami
+//	    System.out.println(url);// Put', chto by mozhno bylo posmotret' v brauzere otvet sluzhby
+	    final JSONObject response = JsonReader.read(url);// delaem zapros k vebservisu i poluchaem ot nego otvet
+	    // kak pravilo naibolee podhodjashhij otvet pervyj i dannye o koordinatah mozhno poluchit' po puti
+	    // //results[0]/geometry/location/lng i //results[0]/geometry/location/lat
 	    JSONObject location = response.getJSONArray("results").getJSONObject(0);
 	    location = location.getJSONObject("geometry");
 	    location = location.getJSONObject("location");
-	    final double lat = location.getDouble("lat");// широта
-	    final double lng = location.getDouble("lng");// долгота
+	    final double lat = location.getDouble("lat");// shirota
+	    final double lng = location.getDouble("lng");// dolgota
 	    place.setLatitude(lat);
 	    place.setLongitude(lng);
 	}
 	
 
 	private String encodeParams(Map<String, String> params) {
-		String paramsUrl = Joiner.on('&').join(// получаем значение вида
+		String paramsUrl = Joiner.on('&').join(// poluchaem znachenie vida
 												// key1=value1&key2=value2...
 				Iterables.transform(params.entrySet(),
 						new Function<Entry<String, String>, String>() {
@@ -207,18 +198,18 @@ public class TripAdvisorImpl implements TripAdvisor{
 							public String apply(Entry<String, String> input) {
 								try {
 									final StringBuffer buffer = new StringBuffer();
-									buffer.append(input.getKey());// получаем
-																	// значение
-																	// вида
+									buffer.append(input.getKey());// poluchaem
+																	// znachenie
+																	// vida
 																	// key=value
 									buffer.append('=');
 									buffer.append(URLEncoder.encode(
-											input.getValue(), "utf-8"));// кодируем
-																		// строку
-																		// в
-																		// соответствии
-																		// со
-																		// стандартом
+											input.getValue(), "utf-8"));// kodiruem
+																		// stroku
+																		// v
+																		// sootvetstvii
+																		// so
+																		// standartom
 																		// HTML
 																		// 4.01
 									return buffer.toString();
